@@ -22,7 +22,6 @@ public class InjectTest {
 	@Test
 	public void test() {
 		assertNotNull(service);
-		System.out.println(service.getClass().getName());
 		assertTrue(service instanceof IServiceImpl);
 	}
 

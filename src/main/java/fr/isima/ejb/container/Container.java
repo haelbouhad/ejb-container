@@ -1,14 +1,12 @@
 package fr.isima.ejb.container;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import fr.isima.ejb.container.annotations.Inject;
-import fr.isima.ejb.container.annotations.Singleton;
 import fr.isima.ejb.container.annotations.Stateless;
 
 
@@ -34,8 +32,8 @@ public class Container {
 				
 				Object beanProxy;
 				try {
-					beanProxy = Proxy.newProxyInstance(serviceClass.getClassLoader(), getProxyInterfacesOf(serviceClass), new EJBHandler());
-					
+					//beanProxy = Proxy.newProxyInstance(serviceClass.getClassLoader(), getProxyInterfacesOf(serviceClass), new EJBHandler());
+					beanProxy = serviceClass.newInstance();
 					field.setAccessible(true);
 					field.set(ctx, beanProxy);
 				} catch (Exception e) {
