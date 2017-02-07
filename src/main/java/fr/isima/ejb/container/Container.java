@@ -8,6 +8,8 @@ import java.util.Set;
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.annotations.Singleton;
 import fr.isima.ejb.container.annotations.Stateless;
+import fr.isima.ejb.container.exceptions.NoExistingImplementation;
+
 
 
 public class Container {
@@ -22,7 +24,7 @@ public class Container {
 		assignInterfaceToImpl();
     }
 	
-	public static void inject(Object ctx){
+	public static void inject(Object ctx) {
 		
 		// get all fields having @Inject annotation
 		Set<Field> fields = AnnotationsHelper.getFieldsAnnotatedWith(ctx.getClass(), Inject.class);
@@ -45,6 +47,9 @@ public class Container {
 					e.printStackTrace();
 				}
 
+			}
+			else {
+				//throw new NoExistingImplementation(fieldInterfaceName);
 			}
 			
 		}
