@@ -1,12 +1,12 @@
 package fr.isima.ejb.container;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import fr.isima.ejb.container.annotations.Inject;
+import fr.isima.ejb.container.annotations.Singleton;
 import fr.isima.ejb.container.annotations.Stateless;
 
 
@@ -14,8 +14,11 @@ public class Container {
 	
 	private static Map<String, Class<?>> interfaceToImpl;
 	
+	private static BeanManager beanManager;
+	
 	static {
 		interfaceToImpl = new HashMap<String, Class<?>>();
+		beanManager = (BeanManager) BeanManager.getInstance();
 		assignInterfaceToImpl();
     }
 	
@@ -26,16 +29,17 @@ public class Container {
 		
 		for(Field field : fields){
 			String fieldInterfaceName = field.getType().getName();
+			
 			if (interfaceToImpl.containsKey(fieldInterfaceName)) {
+				
 				Class<?> serviceClass = interfaceToImpl.get(fieldInterfaceName);			
 				
-				
-				Object beanProxy;
-				try {
-					//beanProxy = Proxy.newProxyInstance(serviceClass.getClassLoader(), getProxyInterfacesOf(serviceClass), new EJBHandler());
-					beanProxy = serviceClass.newInstance();
+				Object bean;
+				try {					
+					bean = beanManager.getBeanOfClass(serviceClass);
+					System.out.println(bean.getClass().getName());
 					field.setAccessible(true);
-					field.set(ctx, beanProxy);
+					field.set(ctx, bean);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -50,7 +54,14 @@ public class Container {
 	private static void assignInterfaceToImpl() {
 		
 		Set<Class<?>> statelessClasses = AnnotationsHelper.getClassesAnnotatedWith(Stateless.class);
+		Set<Class<?>> singletonClasses = AnnotationsHelper.getClassesAnnotatedWith(Singleton.class);
 		
+		for(Class<?> ejbClass : statelessClasses)
+			beanManager.addStatelessClass(ejbClass);
+		for(Class<?> ejbClass : singletonClasses)
+			beanManager.addSingletonClass(ejbClass);
+		
+		statelessClasses.addAll(singletonClasses);
 		for(Class<?> ejbClass : statelessClasses){
 			Class<?> interfaces[] = ejbClass.getInterfaces();
 			for(Class<?> ejbInterface : interfaces)
@@ -58,15 +69,6 @@ public class Container {
 		}
 		
 		
-	}
-	
-	private static Class<?>[] getProxyInterfacesOf(Class<?> beanClass){
-		Class<?>[] ints = beanClass.getInterfaces();
-		Class<?>[] res = new Class<?>[ints.length + 1];
-		for(int i = 0; i < ints.length; i++)
-			res[i] = ints[i];
-		res[ints.length] = ProxyInterface.class;
-		return res;
 	}
 	
 	
