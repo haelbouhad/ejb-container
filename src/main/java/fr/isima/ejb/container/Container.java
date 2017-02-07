@@ -39,7 +39,7 @@ public class Container {
 				Object bean;
 				try {					
 					bean = beanManager.getBeanOfClass(serviceClass);
-					System.out.println(bean.getClass().getName());
+					//System.out.println(bean.getClass().getName());
 					field.setAccessible(true);
 					field.set(ctx, bean);
 				} catch (Exception e) {
