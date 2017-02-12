@@ -52,7 +52,10 @@ public class BeanManager {
 		Object bean = null;
 		try {
 			bean = serviceClass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch ( IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
