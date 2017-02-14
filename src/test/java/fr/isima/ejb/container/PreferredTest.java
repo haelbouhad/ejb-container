@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.isima.ejb.container.annotations.Inject;
+import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 import fr.isima.ejb.container.mocks.MultipleService;
 import fr.isima.ejb.container.mocks.MultipleServiceImpl2;
 
@@ -15,7 +16,7 @@ public class PreferredTest {
 	private MultipleService service;
 	
 	@Before
-	public void init(){
+	public void init() throws NoExistingImplementation{
 		Container.inject(this);
 	}
 	

@@ -18,7 +18,7 @@ public class ClassLoaderTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws NoExistingImplementation {
 		Container.inject(this);
 		assertNull(service);
 	}

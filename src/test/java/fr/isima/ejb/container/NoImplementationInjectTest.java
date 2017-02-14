@@ -12,7 +12,7 @@ public class NoImplementationInjectTest {
 	private NotImplementedInterface service;
 	
 	@Test(expected = NoExistingImplementation.class)
-	public void test() {
+	public void test() throws NoExistingImplementation {
 		Container.inject(this);
 	}
 

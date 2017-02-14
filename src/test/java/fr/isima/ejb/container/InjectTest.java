@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.isima.ejb.container.annotations.Inject;
+import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 import fr.isima.ejb.container.mocks.IService;
 import fr.isima.ejb.container.mocks.IServiceImpl;
 
@@ -29,7 +30,7 @@ public class InjectTest {
 	@Inject
 	
 	@Before
-	public void init(){
+	public void init() throws NoExistingImplementation{
 		Container.inject(this);
 	}
 

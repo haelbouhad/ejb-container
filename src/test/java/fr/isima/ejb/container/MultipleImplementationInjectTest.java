@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
+import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 import fr.isima.ejb.container.mocks.INoPrefImplService;
 import fr.isima.ejb.container.mocks.MultipleService;
 
@@ -15,7 +16,7 @@ public class MultipleImplementationInjectTest {
 	private INoPrefImplService service;
 	
 	@Test(expected = MultipleExistingImplementation.class)
-	public void test() {
+	public void test() throws NoExistingImplementation {
 		Container.inject(this);
 	}
 
