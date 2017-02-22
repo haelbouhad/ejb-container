@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import fr.isima.ejb.container.annotations.Inject;
+import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 import fr.isima.ejb.container.mocks.NotImplementedInterface;
 
@@ -18,7 +19,7 @@ public class ClassLoaderTest {
 	}
 
 	@Test
-	public void test() throws NoExistingImplementation {
+	public void test() throws NoExistingImplementation, MultipleExistingImplementation {
 		Container.inject(this);
 		assertNull(service);
 	}
