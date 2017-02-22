@@ -4,6 +4,8 @@ import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.annotations.Stateless;
 
 @Stateless
-public class IServiceImpl implements IService {
-
+public class CascadedInterfaceImplementation implements CascadedInterface{
+	@Inject
+	public IService service;
+	
 }
