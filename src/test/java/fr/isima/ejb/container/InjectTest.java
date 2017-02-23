@@ -6,7 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.isima.ejb.container.annotations.Inject;
+import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
+import fr.isima.ejb.container.mocks.CascadedInterface;
+import fr.isima.ejb.container.mocks.CascadedInterfaceImplementation;
 import fr.isima.ejb.container.mocks.IService;
 import fr.isima.ejb.container.mocks.IServiceImpl;
 
@@ -27,20 +30,30 @@ public class InjectTest {
 	@Inject
 	private IService service;
 	
+
+	@Inject
+	private CascadedInterface cascade;
+
 	
 	@Before
-	public void init() throws NoExistingImplementation{
+	public void init() throws NoExistingImplementation, MultipleExistingImplementation{
 		Container.inject(this);
 	}
 
 	@Test
-	public void test() {
+	public void simpleInjectTest() {
 		assertNotNull(service);
 		assertTrue(service instanceof IServiceImpl);
-		// Cascade test
-		/*
-		assertNotNull(service.service);
-		assertTrue(service.service instanceof IServiceImpl);
+		
+	}
+	
+	@Test
+	public void cascadeInjectTest(){
+		assertNotNull(cascade);
+		assertTrue(cascade instanceof CascadedInterfaceImplementation);
+		//* 
+		assertNotNull(((CascadedInterfaceImplementation)cascade).service);
+		assertTrue(((CascadedInterfaceImplementation)cascade).service instanceof IServiceImpl);
 		//*/
 	}
 

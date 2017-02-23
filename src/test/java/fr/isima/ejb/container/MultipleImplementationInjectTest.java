@@ -1,6 +1,6 @@
 package fr.isima.ejb.container;
 
-import org.junit.Test;
+
 
 
 /* this test is performed with a service that has multiple implementations
@@ -11,7 +11,7 @@ public class MultipleImplementationInjectTest {
 	private INoPrefImplService service;
 	
 	@Test(expected = MultipleExistingImplementation.class)
-	public void test() throws NoExistingImplementation {
+	public void test() throws NoExistingImplementation, MultipleExistingImplementation {
 		Container.inject(this);
 	}
 	*/

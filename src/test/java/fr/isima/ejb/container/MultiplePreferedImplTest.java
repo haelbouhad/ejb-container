@@ -5,16 +5,15 @@ import org.junit.Test;
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
-import fr.isima.ejb.container.mocks.NotImplementedInterface;
+import fr.isima.ejb.container.mocks.IMultiplePrefService;
 
-public class NoImplementationInjectTest {
+public class MultiplePreferedImplTest {
 
 	@Inject 
-	private NotImplementedInterface service;
+	private IMultiplePrefService service;
 	
-	@Test(expected = NoExistingImplementation.class)
+	@Test(expected = MultipleExistingImplementation.class)
 	public void test() throws NoExistingImplementation, MultipleExistingImplementation {
 		Container.inject(this);
 	}
-
 }

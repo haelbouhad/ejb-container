@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.isima.ejb.container.annotations.Inject;
+import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 import fr.isima.ejb.container.logging.Logger;
 import fr.isima.ejb.container.mocks.IService;
@@ -16,7 +17,7 @@ public class LogTest {
 	private IService service;
 	
 	@Before
-	public void init() throws NoExistingImplementation{
+	public void init() throws NoExistingImplementation, MultipleExistingImplementation{
 		Container.inject(this);
 	}
 	

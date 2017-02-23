@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.omg.CORBA.NVList;
+
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.annotations.Preferred;
 import fr.isima.ejb.container.annotations.Singleton;
 import fr.isima.ejb.container.annotations.Stateless;
+import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 
 
@@ -27,7 +30,7 @@ public class Container {
 		assignInterfaceToImpl();
     }
 	
-	public static void inject(Object ctx) throws NoExistingImplementation {
+	public static void inject(Object ctx) throws NoExistingImplementation, MultipleExistingImplementation {
 		
 		// get all fields having @Inject annotation
 		Set<Field> fields = AnnotationsHelper.getFieldsAnnotatedWith(ctx.getClass(), Inject.class);
@@ -42,47 +45,41 @@ public class Container {
 				// get all implementations for one class
 				List<Class<?>> serviceClass = interfaceToImpl.get(fieldInterfaceName);			
 				
-				/* TODO if we have multiple implementations of one interface 
-				 *  check to see if one of them is annoted @Prefered
-				 * 	if no  return noImplementationException
-				 * if yes return good implementation
-				 */
-				
+				int index = 0;
 				if(serviceClass.size() >1){
-					Object bean;
-					try {		
-						/** System.out.println("it   : " + fieldInterfaceName);
-						System.out.println("impl : " + serviceClass.get(0)); **/
-						// get an instance of the class
-						bean = beanManager.getBeanOfClass(serviceClass.get(0));
-						//System.out.println(bean.getClass().getName());
-						// set it to be accessible from the outside
-						field.setAccessible(true);
-						//return the instance object to the context that needed it
-						field.set(ctx, bean);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					
+					Set<Class<?>> preferedClasses = AnnotationsHelper.getClassesAnnotatedWith(Preferred.class);
+					int nbImplementations = 0;
+
+					
+					for(int i = 0; i < serviceClass.size(); i++){
+						if(preferedClasses.contains(serviceClass.get(i)))
+						{
+							nbImplementations++;
+							index = i;
+						}
 					}
+					if(nbImplementations > 1 || nbImplementations == 0){
+						throw new MultipleExistingImplementation(fieldInterfaceName);
+					}
+					
 				}
-				else{
-					Object bean;
-					try {		
-						/** System.out.println("it   : " + fieldInterfaceName);
-						System.out.println("impl : " + serviceClass.get(0)); **/
-						
-						// get an instance of the class
-						bean = beanManager.getBeanOfClass(serviceClass.get(0));
-						
-						//System.out.println(bean.getClass().getName());
-						// set it to be accessible from the outside
-						field.setAccessible(true);
-						//return the instance object to the context that needed it
-						field.set(ctx, bean);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				Object bean;
+				try {		
+
+					
+					// get an instance of the class
+					bean = beanManager.getBeanOfClass(serviceClass.get(index));
+
+					// set it to be accessible from the outside
+					field.setAccessible(true);
+					
+					Container.inject(bean);
+					//return the instance object to the context that needed it
+					field.set(ctx, bean);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 			}
@@ -94,16 +91,13 @@ public class Container {
 		
 	}
 
+	
+	
 	private static void assignInterfaceToImpl() {
 		
 		Set<Class<?>> statelessClasses = AnnotationsHelper.getClassesAnnotatedWith(Stateless.class);
 		Set<Class<?>> singletonClasses = AnnotationsHelper.getClassesAnnotatedWith(Singleton.class);
-		Set<Class<?>> preferedClasses = AnnotationsHelper.getClassesAnnotatedWith(Preferred.class);
-		
-		System.out.println("DEBUT");
-		for(Class<?> ejbClass : preferedClasses)
-			System.out.println("THIS::" + ejbClass.getName());
-		
+
 		for(Class<?> ejbClass : statelessClasses)
 			beanManager.addStatelessClass(ejbClass);
 		for(Class<?> ejbClass : singletonClasses)
@@ -121,8 +115,8 @@ public class Container {
 					
 					ejbClasses.add(0, ejbClass);
 				}else{
-					System.out.print("Annotations: " + ejbClass.getAnnotations().length);
-					System.out.println(" "+ ejbClass.getName());
+					//System.out.print("Annotations: " + ejbClass.getAnnotations().length);
+					//System.out.println(" "+ ejbClass.getName());
 					ejbClasses.add(ejbClass);
 				}
 				interfaceToImpl.put(ejbInterface.getName(), ejbClasses);
