@@ -2,6 +2,8 @@ package fr.isima.ejb.container;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Proxy;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,21 +41,27 @@ public class InjectTest {
 	public void init() throws NoExistingImplementation, MultipleExistingImplementation{
 		Container.inject(this);
 	}
+	
+	private Class<?> classOfProxy(Object proxy){
+		return ((EJBHandler)Proxy.getInvocationHandler(proxy)).getBeanClass();
+	}
 
 	@Test
 	public void simpleInjectTest() {
 		assertNotNull(service);
-		assertTrue(service instanceof IServiceImpl);
-		
+		assertTrue(service instanceof Proxy);
+		assertEquals(classOfProxy(service), IServiceImpl.class);
 	}
 	
 	@Test
 	public void cascadeInjectTest(){
 		assertNotNull(cascade);
-		assertTrue(cascade instanceof CascadedInterfaceImplementation);
+		assertTrue(cascade instanceof Proxy);
+		assertEquals(classOfProxy(cascade), CascadedInterfaceImplementation.class);
+		
 		//* 
-		assertNotNull(((CascadedInterfaceImplementation)cascade).service);
-		assertTrue(((CascadedInterfaceImplementation)cascade).service instanceof IServiceImpl);
+		//assertNotNull(((CascadedInterfaceImplementation)cascade).service);
+		//assertTrue(((CascadedInterfaceImplementation)cascade).service instanceof IServiceImpl);
 		//*/
 	}
 
