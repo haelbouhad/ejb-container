@@ -27,7 +27,6 @@ public class InjectTest {
 	@Inject
 	private IService service;
 	
-	@Inject
 	
 	@Before
 	public void init() throws NoExistingImplementation{

@@ -1,7 +1,9 @@
 package fr.isima.ejb.container.mocks;
 
-import fr.isima.ejb.container.annotations.Inject;
+
+import fr.isima.ejb.container.annotations.Log;
 import fr.isima.ejb.container.annotations.Stateless;
+import fr.isima.ejb.container.logging.Logger;
 
 @Stateless
 public class IServiceImpl implements IService {
@@ -11,4 +13,11 @@ public class IServiceImpl implements IService {
 	@Inject
 	public IService service;
 	//*/
+	
+	@Log
+	public void method(){
+		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+		String className =  (stackTraceElements[1].getClassName());
+		System.out.println(Logger.getClass(className) + "." + stackTraceElements[1].getMethodName() + "()");
+	}
 }
