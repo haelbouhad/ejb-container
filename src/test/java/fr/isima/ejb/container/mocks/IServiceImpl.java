@@ -12,5 +12,9 @@ public class IServiceImpl implements IService {
 	@Log
 	public void method(){
 	}
+	
+	@Log
+	public void method2(){
+	}
 
 }

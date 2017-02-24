@@ -9,7 +9,8 @@ public class LogInterceptor implements  Interceptor {
 	@Override
 	public Object invoke(Invocation invocation) {
 		
-		Logger.log(invocation.getClass().getName() + "." + invocation.getMethod().getName());
+		Logger.log(invocation.getBean().getClass().getSimpleName() + "." + invocation.getMethod().getName()+"()");
+		System.out.println(invocation.getBean().getClass().getSimpleName() + "." + invocation.getMethod().getName()+"()");
 		
 		return invocation.nextInterceptor();
 		

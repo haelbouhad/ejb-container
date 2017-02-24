@@ -1,12 +1,13 @@
 package fr.isima.ejb.container.interceptors;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class Invocation {
 	
 	private Object bean;
 	
-	private Interceptor[] interceptors;
+	private List<Interceptor> interceptors;
 	
 	private Method method;
 	
@@ -14,7 +15,7 @@ public class Invocation {
 	
 	private int index;
 
-	public Invocation(Object bean, Interceptor[] interceptors, Method method, Object[] args) {
+	public Invocation(Object bean, List<Interceptor> interceptors, Method method, Object[] args) {
 		super();
 		this.bean = bean;
 		this.interceptors = interceptors;
@@ -35,7 +36,14 @@ public class Invocation {
 	}
 	
 	public Object nextInterceptor(){
-		return interceptors[index++].invoke(this);
+		Object result = null;
+		
+        if(index < interceptors.size()){
+            result = interceptors.get(index++).invoke(this);
+        }
+        
+        return result;
+
 	}
 	
 	

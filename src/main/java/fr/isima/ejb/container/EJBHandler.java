@@ -1,26 +1,38 @@
 package fr.isima.ejb.container;
 
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import fr.isima.ejb.container.annotations.Log;
 import fr.isima.ejb.container.interceptors.Interceptor;
 import fr.isima.ejb.container.interceptors.Invocation;
+import fr.isima.ejb.container.interceptors.LogInterceptor;
 
 public class EJBHandler implements InvocationHandler {
 
 	private Class<?> beanClass;
 	private Object bean;
-	private Interceptor[] interceptors;
+	private List<Interceptor> interceptors;	// BeanClass interceptors
+	private Map<Method, List<Interceptor>> methodInterceptors;
 	private BeanManager beanManager;
 	
 	
 	public EJBHandler(Class<?> beanClass){
 		this.beanClass = beanClass;
 		beanManager = BeanManager.getInstance();
+		interceptors = new ArrayList<Interceptor>();
+		methodInterceptors = new HashMap<Method, List<Interceptor>>();
 	}
 	
-	public EJBHandler(Object bean, Interceptor[] interceptors) {
+	public EJBHandler(Object bean, List<Interceptor> interceptors) {
 		this.bean = bean;
 		this.interceptors = interceptors;
 	}
@@ -37,11 +49,19 @@ public class EJBHandler implements InvocationHandler {
 		Object result = null;
 		bean = beanManager.getBeanOfClass(beanClass);
 		
+		
 		// Call of equals method
 		if(method.getName().equals("equals")){
 			result = ( bean == ((Iproxy)args[0]).getBean() );
 		}else if(method.getName().equals("getBean")){
 			result = bean;
+		}else{
+			method = beanClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
+			if(method.getAnnotation(Log.class).annotationType().equals(Log.class)){
+				methodInterceptors.put(method, Arrays.asList(new LogInterceptor()));
+			}
+			Invocation invocation = new Invocation(bean, methodInterceptors.get(method), method, args);
+			result = invocation.nextInterceptor();
 		}
 		
 		return result;

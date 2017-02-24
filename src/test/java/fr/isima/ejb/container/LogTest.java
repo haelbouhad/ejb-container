@@ -1,5 +1,6 @@
 package fr.isima.ejb.container;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -23,8 +24,14 @@ public class LogTest {
 	
 	@Test
 	public void test(){
+		
 		service.method();
-		assertTrue(Logger.contains("IService.method()"));
+		assertTrue(Logger.contains("IServiceImpl.method()"));
+		assertFalse(Logger.contains("IServiceImpl.method2()"));
+		
+		service.method2();
+		assertTrue(Logger.contains("IServiceImpl.method2()"));
+		
 	}
 	
 	
