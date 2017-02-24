@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.isima.ejb.container.annotations.Log;
+import fr.isima.ejb.container.annotations.TransactionAttribute;
 import fr.isima.ejb.container.interceptors.Interceptor;
 import fr.isima.ejb.container.interceptors.Invocation;
 import fr.isima.ejb.container.interceptors.LogInterceptor;
@@ -63,16 +64,31 @@ public class EJBHandler implements InvocationHandler {
 			result = beanClass.getName();
 		}else{
 			method = beanClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
+			TransactionAttribute.Type type = getTransactionType(method);
+			Transaction.start(type);
 			if(method.getAnnotation(Log.class).annotationType().equals(Log.class)){
 				methodInterceptors.put(method, Arrays.asList(new LogInterceptor()));
 			}
 			Invocation invocation = new Invocation(bean, methodInterceptors.get(method), method, args);
 			result = invocation.nextInterceptor();
+			Transaction.stop(type);
 		}
 		
 		return result;
 	}
 	
+	private TransactionAttribute.Type getTransactionType(Method method) {
+		
+		TransactionAttribute.Type result = TransactionAttribute.Type.NEVER;
+		
+		TransactionAttribute ta = method.getAnnotation(TransactionAttribute.class);
+		
+		if(ta != null)
+			result = ta.value();
+			
+		return result;
+	}
+
 	public Class<?> getBeanClass() {
 		return beanClass;
 	}
