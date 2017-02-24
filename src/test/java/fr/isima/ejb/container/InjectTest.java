@@ -42,10 +42,6 @@ public class InjectTest {
 		Container.inject(this);
 	}
 	
-	private Class<?> classOfProxy(Object proxy){
-		return ((EJBHandler)Proxy.getInvocationHandler(proxy)).getBeanClass();
-	}
-
 	@Test
 	public void simpleInjectTest() {
 		assertNotNull(service);
@@ -61,7 +57,10 @@ public class InjectTest {
 		
 		//* 
 		assertNotNull(((CascadedInterfaceImplementation)Container.getBean(cascade)).service);
-		assertTrue(((CascadedInterfaceImplementation)Container.getBean(cascade)).service instanceof IServiceImpl);
+		assertTrue(
+				Container.getBean(((CascadedInterfaceImplementation)Container.getBean(cascade)).service)
+				instanceof IServiceImpl
+		);
 		//*/
 	}
 
