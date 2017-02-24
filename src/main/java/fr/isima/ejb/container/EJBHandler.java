@@ -25,7 +25,6 @@ public class EJBHandler implements InvocationHandler {
 	private Map<Method, List<Interceptor>> methodInterceptors;
 	private BeanManager beanManager;
 	
-	
 	public EJBHandler(Class<?> beanClass){
 		this.beanClass = beanClass;
 		beanManager = BeanManager.getInstance();

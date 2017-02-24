@@ -69,13 +69,13 @@ public class Container {
 				try {
 					
 					// get an instance of the class
-					beanProxy = EJBHandler.newInstance(serviceClass.get(0), getInterfacesOf(serviceClass.get(0)) );
+					beanProxy = EJBHandler.newInstance(serviceClass.get(index), getInterfacesOf(serviceClass.get(index)) );
 
 					// set it to be accessible from the outside
 					field.setAccessible(true);
 					
 					// Inject nested beans -- beanProxy.getHandler().getBeanClass()
-					Container.inject(beanProxy);
+					Container.inject(getBean(beanProxy));
 					
 					//return the instance object to the context that needed it
 					field.set(ctx, beanProxy);
