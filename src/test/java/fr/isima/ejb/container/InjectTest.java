@@ -50,18 +50,18 @@ public class InjectTest {
 	public void simpleInjectTest() {
 		assertNotNull(service);
 		assertTrue(service instanceof Proxy);
-		assertEquals(classOfProxy(service), IServiceImpl.class);
+		assertTrue(Container.getBean(service) instanceof IServiceImpl);
 	}
 	
 	@Test
 	public void cascadeInjectTest(){
 		assertNotNull(cascade);
 		assertTrue(cascade instanceof Proxy);
-		assertEquals(classOfProxy(cascade), CascadedInterfaceImplementation.class);
+		assertTrue(Container.getBean(cascade) instanceof CascadedInterfaceImplementation);
 		
 		//* 
-		//assertNotNull(((CascadedInterfaceImplementation)cascade).service);
-		//assertTrue(((CascadedInterfaceImplementation)cascade).service instanceof IServiceImpl);
+		assertNotNull(((CascadedInterfaceImplementation)Container.getBean(cascade)).service);
+		assertTrue(((CascadedInterfaceImplementation)Container.getBean(cascade)).service instanceof IServiceImpl);
 		//*/
 	}
 

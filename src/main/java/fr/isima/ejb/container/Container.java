@@ -74,7 +74,7 @@ public class Container {
 					// set it to be accessible from the outside
 					field.setAccessible(true);
 					
-					// Inject nested beans
+					// Inject nested beans -- beanProxy.getHandler().getBeanClass()
 					Container.inject(beanProxy);
 					
 					//return the instance object to the context that needed it
@@ -95,7 +95,9 @@ public class Container {
 	}
 
 	
-
+	public static Object getBean(Object proxy){
+		return EJBHandler.getBeanOf(proxy);
+	}
 
 
 

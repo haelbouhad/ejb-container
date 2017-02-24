@@ -31,9 +31,9 @@ public class SingletonTest {
         assertTrue(service1 instanceof Proxy);
         assertTrue(service2 instanceof Proxy);
 
-        // Cannot override == operator while calling InvocationHandler invoke's method
-        // assertTrue(service1 == service2); 
+        // version without EJBHandler
         assertTrue(service1.equals(service2));
+        // version with EJBHandler
     }
 
 

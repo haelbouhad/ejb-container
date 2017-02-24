@@ -28,6 +28,9 @@ public class EJBHandler implements InvocationHandler {
 	public EJBHandler(Class<?> beanClass){
 		this.beanClass = beanClass;
 		beanManager = BeanManager.getInstance();
+		bean = beanManager.getBeanOfClass(beanClass);
+		// Parserle beanClass et detecter les annotation inject pour 
+		// ..
 		interceptors = new ArrayList<Interceptor>();
 		methodInterceptors = new HashMap<Method, List<Interceptor>>();
 	}
@@ -40,6 +43,10 @@ public class EJBHandler implements InvocationHandler {
 	public static Object newInstance(Class<?> beanClass, Class<?>[] interfaces){
 		return Proxy.newProxyInstance(beanClass.getClassLoader(), interfaces, new EJBHandler(beanClass) );
 	}
+	
+	public static Object getBeanOf(Object proxy){
+		return ((EJBHandler)Proxy.getInvocationHandler(proxy)).getBean();
+	}
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -47,14 +54,13 @@ public class EJBHandler implements InvocationHandler {
 		return invocation.nextInterceptor();*/
 		
 		Object result = null;
-		bean = beanManager.getBeanOfClass(beanClass);
 		
 		
 		// Call of equals method
 		if(method.getName().equals("equals")){
-			result = ( bean == ((Iproxy)args[0]).getBean() );
-		}else if(method.getName().equals("getBean")){
-			result = bean;
+			result = ( bean == getBeanOf(args[0]) );
+		}else if(method.getName().equals("toString")){
+			result = beanClass.getName();
 		}else{
 			method = beanClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
 			if(method.getAnnotation(Log.class).annotationType().equals(Log.class)){
@@ -69,6 +75,10 @@ public class EJBHandler implements InvocationHandler {
 	
 	public Class<?> getBeanClass() {
 		return beanClass;
+	}
+	
+	public Object getBean() {
+		return bean;
 	}
 
 }
