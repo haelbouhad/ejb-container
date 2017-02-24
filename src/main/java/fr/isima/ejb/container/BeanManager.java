@@ -14,7 +14,7 @@ public class BeanManager {
 	
 	private Map<Class<?>, Object> singletonClassToBean;
 	
-	public static Object getInstance() {
+	public static BeanManager getInstance() {
 		if(instance ==null)
 			instance = new BeanManager();
 		return instance;

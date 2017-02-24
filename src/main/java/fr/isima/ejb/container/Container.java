@@ -64,19 +64,22 @@ public class Container {
 					}
 					
 				}
-				Object bean;
-				try {		
-
+				
+				Object beanProxy = null;
+				try {
 					
 					// get an instance of the class
-					bean = beanManager.getBeanOfClass(serviceClass.get(index));
+					beanProxy = EJBHandler.newInstance(serviceClass.get(0), getInterfacesOf(serviceClass.get(0)) );
 
 					// set it to be accessible from the outside
 					field.setAccessible(true);
 					
-					Container.inject(bean);
+					// Inject nested beans -- beanProxy.getHandler().getBeanClass()
+					Container.inject(beanProxy);
+					
 					//return the instance object to the context that needed it
-					field.set(ctx, bean);
+					field.set(ctx, beanProxy);
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -92,7 +95,34 @@ public class Container {
 	}
 
 	
-	
+	public static Object getBean(Object proxy){
+		return EJBHandler.getBeanOf(proxy);
+	}
+
+
+
+	private static Class<?>[] getInterfacesOf(Class<?> beanClass) {
+		
+		List<Class<?>> interfaces = new ArrayList<Class<?>>();
+		
+		// Add business interfaces
+		for(Class<?> interf : beanClass.getInterfaces())
+			interfaces.add(interf);
+		
+		// Add Proxy interface
+		interfaces.add(Iproxy.class);
+		
+		Class<?>[] result = new Class<?>[interfaces.size()];
+		interfaces.toArray(result);
+		
+		return result;	
+	}
+
+
+
+
+
+
 	private static void assignInterfaceToImpl() {
 		
 		Set<Class<?>> statelessClasses = AnnotationsHelper.getClassesAnnotatedWith(Stateless.class);

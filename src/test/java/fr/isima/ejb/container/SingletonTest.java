@@ -1,6 +1,8 @@
 package fr.isima.ejb.container;
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Proxy;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,10 +28,12 @@ public class SingletonTest {
 	
     @Test
     public void test() {
-        assertTrue(service1 instanceof SingletonServiceImpl);
-        assertTrue(service2 instanceof SingletonServiceImpl);
+        assertTrue(service1 instanceof Proxy);
+        assertTrue(service2 instanceof Proxy);
 
-        assertTrue(service1 == service2);
+        // version without EJBHandler
+        assertTrue(service1.equals(service2));
+        // version with EJBHandler
     }
 
 
