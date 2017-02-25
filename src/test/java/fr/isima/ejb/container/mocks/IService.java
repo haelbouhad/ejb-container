@@ -10,5 +10,5 @@ public interface IService {
 	
 	public void doRequiresNewTransaction();
 	
-	public void doNeverTrnasaction();
+	public void doNeverTransaction();
 }

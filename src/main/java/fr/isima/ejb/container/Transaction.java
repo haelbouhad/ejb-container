@@ -1,42 +1,23 @@
 package fr.isima.ejb.container;
 
-import java.util.Stack;
-
-import fr.isima.ejb.container.annotations.TransactionAttribute.Type;
+import java.lang.reflect.Method;
 
 public class Transaction {
-
-	private static int counter = 0;
-	private static Stack<Transaction> all = new Stack<Transaction>();
 	
+	private Object bean;
+	private Method method;
 
-	public static int getCounter() {
-		return counter;
+	public Transaction(Object bean, Method method) {
+		this.bean   = bean;
+		this.method = method;
 	}
-
-	public static Stack<Transaction> getAll() {
-		return all ;
+	
+	public Object getBean() {
+		return bean;
 	}
-
-	public static void start(Type type) {
-		switch (type) {
-			case NEVER :
-				break;
-				
-			case REQUIRED :
-				if(all.isEmpty()){
-					all.push(new Transaction());
-					counter++;
-				}
-				break;
-			
-			case REQUIRES_NEW:
-				break;
-		}
-	}
-
-	public static void stop(Type type) {
-		all.pop();
+	
+	public Method getMethod() {
+		return method;
 	}
 
 }

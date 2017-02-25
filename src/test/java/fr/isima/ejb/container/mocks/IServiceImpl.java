@@ -32,7 +32,7 @@ public class IServiceImpl implements IService {
 	}
 
 	@TransactionAttribute(Type.NEVER)
-	public void doNeverTrnasaction() {
+	public void doNeverTransaction() {
 		// TODO Auto-generated method stub
 		
 	}

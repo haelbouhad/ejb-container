@@ -25,6 +25,7 @@ public class EJBHandler implements InvocationHandler {
 	private Map<Method, List<Interceptor>> methodInterceptors;
 	private BeanManager beanManager;
 	
+	
 	public EJBHandler(Class<?> beanClass){
 		this.beanClass = beanClass;
 		beanManager = BeanManager.getInstance();
@@ -64,18 +65,24 @@ public class EJBHandler implements InvocationHandler {
 		}else{
 			method = beanClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
 			TransactionAttribute.Type type = getTransactionType(method);
-			Transaction.start(type);
-			if(method.getAnnotation(Log.class).annotationType().equals(Log.class)){
-				methodInterceptors.put(method, Arrays.asList(new LogInterceptor()));
-			}
-			Invocation invocation = new Invocation(bean, methodInterceptors.get(method), method, args);
-			result = invocation.nextInterceptor();
-			Transaction.stop(type);
+			TransactionHelper.start(bean, method, type);
+				
+				assignInterceptors(method);
+				Invocation invocation = new Invocation(bean, methodInterceptors.get(method), method, args);
+				result = invocation.nextInterceptor();
+				
+			TransactionHelper.stop(bean, method, type);
 		}
 		
 		return result;
 	}
 	
+	private void assignInterceptors(Method method) {
+		if(method.getAnnotation(Log.class) != null)
+			methodInterceptors.put(method, Arrays.asList(new LogInterceptor()));
+		
+	}
+
 	private TransactionAttribute.Type getTransactionType(Method method) {
 		
 		TransactionAttribute.Type result = TransactionAttribute.Type.NEVER;
