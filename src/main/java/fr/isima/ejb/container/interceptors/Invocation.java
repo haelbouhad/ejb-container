@@ -38,7 +38,7 @@ public class Invocation {
 	public Object nextInterceptor(){
 		Object result = null;
 		
-        if(index < interceptors.size()){
+        if(interceptors != null && index < interceptors.size()){
             result = interceptors.get(index++).invoke(this);
         }
         
