@@ -41,5 +41,11 @@ public class IServiceImpl implements IService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Log
+	@TransactionAttribute(Type.REQUIRED)
+	public void loggedTransactionMethod(){
+		
+	}
 
 }

@@ -10,6 +10,7 @@ public interface IService {
 	public void notLoggedMethod();
 		
 	
+	public void loggedTransactionMethod();
 	
 	public void doRequiredTransaction();
 	

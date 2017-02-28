@@ -23,8 +23,8 @@ public class EJBHandler implements InvocationHandler {
 
 	private Class<?> beanClass;
 	private Object bean;
-	private List<Interceptor> interceptors;	
-	private Map<Method, List<Interceptor>> methodInterceptors;
+	private List<Interceptor> interceptors;	// on en a besoin?
+	private Map<Method, List<Interceptor>> methodInterceptors; 
 	private BeanManager beanManager;
 	
 	

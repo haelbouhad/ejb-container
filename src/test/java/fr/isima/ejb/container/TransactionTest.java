@@ -1,5 +1,7 @@
 package fr.isima.ejb.container;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +11,7 @@ import fr.isima.ejb.container.annotations.TransactionAttribute;
 import fr.isima.ejb.container.exceptions.EJBException;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
+import fr.isima.ejb.container.logging.Logger;
 import fr.isima.ejb.container.mocks.interfaces.IService;
 
 public class TransactionTest {
@@ -60,6 +63,18 @@ public class TransactionTest {
 		TransactionManager.start(this, null, TransactionAttribute.Type.REQUIRES_NEW);
 		Assert.assertTrue(TransactionManager.getCounter() == 1);
 		service.doNeverTransaction();
+	}
+	
+	@Test
+	public void annotationsLogAndTransaction(){
+		
+		
+		service.loggedTransactionMethod();
+		Assert.assertTrue(TransactionManager.getCounter() == 1);
+		Assert.assertTrue(TransactionManager.getAll().empty());
+		assertTrue(Logger.size() == 1);
+		assertTrue(Logger.contains("IServiceImpl.loggedTransactionMethod()"));
+			
 	}
 	
 	

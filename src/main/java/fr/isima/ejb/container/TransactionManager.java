@@ -27,7 +27,7 @@ public class TransactionManager {
 		switch (type) {
 			case NEVER :
 				if(!all.isEmpty())
-					throw new EJBException();
+					throw new EJBException(method.getName() + "Error with Transaction: Annotated With 'NEVER' but transaction already occuring");
 				break;
 				
 			case REQUIRED :

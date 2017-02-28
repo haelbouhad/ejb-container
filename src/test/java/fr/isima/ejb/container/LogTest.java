@@ -20,6 +20,7 @@ public class LogTest {
 	@Before
 	public void init() throws NoExistingImplementation, MultipleExistingImplementation{
 		Container.inject(this);
+		Logger.reset();
 	}
 	
 	@Test
@@ -33,7 +34,7 @@ public class LogTest {
 	
 	@Test
 	public void cascadedLogTest(){
-		Logger.reset();
+
 		
 		service.SecondLoggedMethod();
 		
@@ -45,7 +46,6 @@ public class LogTest {
 	
 	@Test
 	public void NonLogTest(){
-		Logger.reset();
 		
 		service.notLoggedMethod();		
 		assertTrue(Logger.size() == 0);	
