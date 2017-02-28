@@ -3,6 +3,8 @@ package fr.isima.ejb.container.interceptors;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import fr.isima.ejb.container.exceptions.EJBException;
+
 public class Invocation {
 	
 	private Object bean;
@@ -35,7 +37,7 @@ public class Invocation {
 		return args;
 	}
 	
-	public Object nextInterceptor(){
+	public Object nextInterceptor() throws Exception{
 		Object result = null;
 		
         if(interceptors != null && index < interceptors.size()){

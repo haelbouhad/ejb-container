@@ -13,9 +13,11 @@ import java.util.Map;
 
 import fr.isima.ejb.container.annotations.Log;
 import fr.isima.ejb.container.annotations.TransactionAttribute;
+import fr.isima.ejb.container.exceptions.EJBException;
 import fr.isima.ejb.container.interceptors.Interceptor;
 import fr.isima.ejb.container.interceptors.Invocation;
 import fr.isima.ejb.container.interceptors.LogInterceptor;
+import fr.isima.ejb.container.interceptors.TransactionInterceptor;
 
 public class EJBHandler implements InvocationHandler {
 
@@ -59,36 +61,46 @@ public class EJBHandler implements InvocationHandler {
 		}else if(method.getName().equals("toString")){
 			result = beanClass.getName();
 		}else{
-			method = beanClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
-			TransactionAttribute.Type type = getTransactionType(method);
-			TransactionManager.start(bean, method, type);
+			
+			method = beanClass.getDeclaredMethod(method.getName(), method.getParameterTypes());		
+			
+			assignInterceptors(method);
+			
+			Invocation invocation = new Invocation(bean, methodInterceptors.get(method), method, args);
+			
+			result = invocation.nextInterceptor();
 				
-				assignInterceptors(method);
-				Invocation invocation = new Invocation(bean, methodInterceptors.get(method), method, args);
-				result = invocation.nextInterceptor();
-				
-			TransactionManager.stop(bean, method, type);
 		}
 		
 		return result;
 	}
 	
-	private void assignInterceptors(Method method) {
-		if(method.getAnnotation(Log.class) != null)
-			methodInterceptors.put(method, Arrays.asList(new LogInterceptor()));
+	private void assignInterceptors(Method method) throws EJBException {
 		
-	}
-
-	private TransactionAttribute.Type getTransactionType(Method method) {
+		List<Interceptor> interceptors = methodInterceptors.get(method);
 		
-		TransactionAttribute.Type result = TransactionAttribute.Type.NEVER;
-		
-		TransactionAttribute ta = method.getAnnotation(TransactionAttribute.class);
-		
-		if(ta != null)
-			result = ta.value();
+		if(interceptors == null)
+		{
+			if(method.getAnnotation(Log.class) != null)
+				methodInterceptors.put(method, Arrays.asList(new LogInterceptor()));
 			
-		return result;
+			if(method.getAnnotation(TransactionAttribute.class) != null ){
+				methodInterceptors.put(method, Arrays.asList(new TransactionInterceptor()));	
+			}
+		}
+		else
+		{
+			if(method.getAnnotation(Log.class) != null){
+				interceptors.add(new LogInterceptor());
+				methodInterceptors.put(method, interceptors);
+			}
+			
+			if(method.getAnnotation(TransactionAttribute.class) != null ){
+				interceptors.add(new TransactionInterceptor());
+				methodInterceptors.put(method, interceptors);	
+			}
+		}
+		
 	}
 
 	public Class<?> getBeanClass() {
