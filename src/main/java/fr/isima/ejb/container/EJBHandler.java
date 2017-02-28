@@ -65,13 +65,13 @@ public class EJBHandler implements InvocationHandler {
 		}else{
 			method = beanClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
 			TransactionAttribute.Type type = getTransactionType(method);
-			TransactionHelper.start(bean, method, type);
+			TransactionManager.start(bean, method, type);
 				
 				assignInterceptors(method);
 				Invocation invocation = new Invocation(bean, methodInterceptors.get(method), method, args);
 				result = invocation.nextInterceptor();
 				
-			TransactionHelper.stop(bean, method, type);
+			TransactionManager.stop(bean, method, type);
 		}
 		
 		return result;

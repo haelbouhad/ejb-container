@@ -9,7 +9,7 @@ import fr.isima.ejb.container.annotations.TransactionAttribute.Type;
 import fr.isima.ejb.container.exceptions.EJBException;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 
-public class TransactionHelper {
+public class TransactionManager {
 
 	private static int counter = 0;
 	private static Stack<Transaction> all = new Stack<Transaction>();
