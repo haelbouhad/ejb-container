@@ -42,8 +42,9 @@ public class IServiceImpl implements IService {
 		
 	}
 	
-	@Log
+	
 	@TransactionAttribute(Type.REQUIRED)
+	@Log
 	public void loggedTransactionMethod(){
 		
 	}

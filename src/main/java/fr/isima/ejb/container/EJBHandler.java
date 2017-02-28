@@ -23,7 +23,6 @@ public class EJBHandler implements InvocationHandler {
 
 	private Class<?> beanClass;
 	private Object bean;
-	private List<Interceptor> interceptors;	// on en a besoin?
 	private Map<Method, List<Interceptor>> methodInterceptors; 
 	private BeanManager beanManager;
 	
@@ -32,13 +31,8 @@ public class EJBHandler implements InvocationHandler {
 		this.beanClass = beanClass;
 		beanManager = BeanManager.getInstance();
 		bean = beanManager.getBeanOfClass(beanClass);
-		interceptors = new ArrayList<Interceptor>();
+
 		methodInterceptors = new HashMap<Method, List<Interceptor>>();
-	}
-	
-	public EJBHandler(Object bean, List<Interceptor> interceptors) {
-		this.bean = bean;
-		this.interceptors = interceptors;
 	}
 
 	public static Object newInstance(Class<?> beanClass, Class<?>[] interfaces){

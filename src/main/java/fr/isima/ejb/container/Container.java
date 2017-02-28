@@ -36,30 +36,18 @@ public class Container {
 		assignInterfaceToImpl();
     }
 	
-	private static int getObjectIndex(List<Class<?>> serviceClass, String fieldInterfaceName) throws NoExistingImplementation, MultipleExistingImplementation {
-		int index = 0;
+	
+	public static void inject(Object ctx) throws NoExistingImplementation, MultipleExistingImplementation {
 		
-		if(serviceClass.size() >1){
-			
-			Set<Class<?>> preferedClasses = AnnotationsHelper.getClassesAnnotatedWith(Preferred.class);
-			int nbImplementations = 0;
-
-			
-			for(int i = 0; i < serviceClass.size(); i++){
-				if(preferedClasses.contains(serviceClass.get(i)))
-				{
-					nbImplementations++;
-					index = i;
-				}
-			}
-			if(nbImplementations > 1 || nbImplementations == 0){
-				throw new MultipleExistingImplementation(fieldInterfaceName);
-			}
+		// get all fields having @Inject annotation
+		Set<Field> fields = AnnotationsHelper.getFieldsAnnotatedWith(ctx.getClass(), Inject.class);
+		
+		for(Field field : fields){
+			injectAttribut(field, ctx);
 			
 		}
-		return index;
+		
 	}
-	
 	private static void injectAttribut(Field field,Object ctx) throws NoExistingImplementation, MultipleExistingImplementation{
 		//get object Class
 		String fieldInterfaceName = field.getType().getName();
@@ -100,18 +88,33 @@ public class Container {
 		}
 	}
 	
-	public static void inject(Object ctx) throws NoExistingImplementation, MultipleExistingImplementation {
+
+	
+	private static int getObjectIndex(List<Class<?>> serviceClass, String fieldInterfaceName) throws NoExistingImplementation, MultipleExistingImplementation {
+		int index = 0;
 		
-		// get all fields having @Inject annotation
-		Set<Field> fields = AnnotationsHelper.getFieldsAnnotatedWith(ctx.getClass(), Inject.class);
-		
-		for(Field field : fields){
-			injectAttribut(field, ctx);
+		if(serviceClass.size() >1){
+			
+			Set<Class<?>> preferedClasses = AnnotationsHelper.getClassesAnnotatedWith(Preferred.class);
+			int nbImplementations = 0;
+
+			
+			for(int i = 0; i < serviceClass.size(); i++){
+				if(preferedClasses.contains(serviceClass.get(i)))
+				{
+					nbImplementations++;
+					index = i;
+				}
+			}
+			if(nbImplementations > 1 || nbImplementations == 0){
+				throw new MultipleExistingImplementation(fieldInterfaceName);
+			}
 			
 		}
-		
+		return index;
 	}
-
+	
+	
 	
 	public static Object getBean(Object proxy){
 		return EJBHandler.getBeanOf(proxy);
