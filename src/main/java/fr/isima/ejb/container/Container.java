@@ -155,21 +155,25 @@ public class Container {
 
 	public static void invokePostConstructOf(Object bean, Class<?> beanClass) {
 		
+		// Test if beanClass is intercepted
 		if(AnnotationsHelper.isAnnotatedWith(beanClass, Interceptors.class)){
-
+			
+			// Get all interceptors
 			Interceptors interceptors = beanClass.getAnnotation(Interceptors.class);
 			
 			for(Class<?> interceptor : interceptors.value() ){
 					
+				// Get methods annotated with PostConstruct
 				Set<Method> methods = AnnotationsHelper.getMethodsAnnotatedWith(interceptor, PostConstruct.class);
 				
 				for(Method method : methods){
 					
-					
-						
-						//method.invoke(bean, new Object[]{});
-						
-
+						try {
+							method.invoke(interceptor.newInstance());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					
 				}
 				
