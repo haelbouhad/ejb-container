@@ -11,7 +11,7 @@ public class LogInterceptor implements  Interceptor {
 	public Object invoke(Invocation invocation) throws Exception {
 		
 		Logger.log(invocation.getBean().getClass().getSimpleName() + "." + invocation.getMethod().getName()+"()");
-		//System.out.println(invocation.getBean().getClass().getSimpleName() + "." + invocation.getMethod().getName()+"()");
+		System.out.println(invocation.getBean().getClass().getSimpleName() + "." + invocation.getMethod().getName()+"()");
 		
 		return invocation.nextInterceptor();
 		
