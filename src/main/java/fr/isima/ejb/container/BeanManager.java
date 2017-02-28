@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class BeanManager {
@@ -75,6 +76,18 @@ public class BeanManager {
 		};
 		
 		return bean;
+	}
+
+	public void addAllStatelessClasses(Set<Class<?>> statelessClasses) {
+		for(Class<?> ejbClass : statelessClasses)
+			addStatelessClass(ejbClass);
+		
+	}
+
+	public void addAllSingletonClasses(Set<Class<?>> singletonClasses) {
+		for(Class<?> ejbClass : singletonClasses)
+			addSingletonClass(ejbClass);
+		
 	}
 
 	
