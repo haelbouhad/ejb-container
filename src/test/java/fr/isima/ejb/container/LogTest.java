@@ -32,6 +32,15 @@ public class LogTest {
 		assertTrue(Logger.size() == 1);		
 	}
 	
+	
+	@Test
+	public void NonLogTest(){
+		
+		service.notLoggedMethod();		
+		assertTrue(Logger.size() == 0);	
+		
+	}
+	
 	@Test
 	public void cascadedLogTest(){
 
@@ -43,14 +52,7 @@ public class LogTest {
 		assertTrue(Logger.contains("IServiceImpl.FirstLoggedMethod()"));
 		
 	}
-	
-	@Test
-	public void NonLogTest(){
-		
-		service.notLoggedMethod();		
-		assertTrue(Logger.size() == 0);	
-		
-	}
+
 	
 	
 	

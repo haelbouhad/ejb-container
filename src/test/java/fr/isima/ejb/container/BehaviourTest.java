@@ -10,14 +10,14 @@ import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 import fr.isima.ejb.container.mocks.classes.FirstInterceptor;
-import fr.isima.ejb.container.mocks.classes.InterceptedServiceImpl;
-import fr.isima.ejb.container.mocks.interfaces.InterceptedService;
+import fr.isima.ejb.container.mocks.classes.BehaviourServiceImpl;
+import fr.isima.ejb.container.mocks.interfaces.BehaviourService;
 
 
-public class InterceptorTest {
+public class BehaviourTest {
 	
 	@Inject
-	private InterceptedService service; 
+	private BehaviourService service; 
 	
 	@Before
 	public void init() throws NoExistingImplementation, MultipleExistingImplementation{
@@ -26,13 +26,13 @@ public class InterceptorTest {
 
 	@Test
 	public void postConstructMethodTest() {
-		Assert.assertTrue(Container.getBean(service) instanceof InterceptedServiceImpl);
+		Assert.assertTrue(Container.getBean(service) instanceof BehaviourServiceImpl);
 		Assert.assertTrue(FirstInterceptor.postConstructWasCalled);
 	}
 	
 	@Test
 	public void PreDestructMethodTest() {
-		Assert.assertTrue(Container.getBean(service) instanceof InterceptedServiceImpl);
+		Assert.assertTrue(Container.getBean(service) instanceof BehaviourServiceImpl);
 		Assert.assertTrue(FirstInterceptor.preDestructWasCalled);
 	}
 
