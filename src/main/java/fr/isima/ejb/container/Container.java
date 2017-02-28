@@ -165,14 +165,11 @@ public class Container {
 				
 				for(Method method : methods){
 					
-					try {
+					
 						
-						method.invoke(bean, new Object[]{});
+						//method.invoke(bean, new Object[]{});
 						
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						
-						//throw new PostConstructInvokationException(m, e);
-					}
+
 					
 				}
 				
