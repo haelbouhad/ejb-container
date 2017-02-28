@@ -13,7 +13,7 @@ import java.util.Set;
 
 
 import fr.isima.ejb.container.annotations.Inject;
-import fr.isima.ejb.container.annotations.Interceptors;
+import fr.isima.ejb.container.annotations.Behaviour;
 import fr.isima.ejb.container.annotations.PostConstruct;
 import fr.isima.ejb.container.annotations.Preferred;
 import fr.isima.ejb.container.annotations.Singleton;
@@ -166,10 +166,10 @@ public class Container {
 	public static void invokePostConstructOf(Object bean, Class<?> beanClass) {
 		
 		// Test if beanClass is intercepted
-		if(AnnotationsHelper.isAnnotatedWith(beanClass, Interceptors.class)){
+		if(AnnotationsHelper.isAnnotatedWith(beanClass, Behaviour.class)){
 			
 			// Get all interceptors
-			Interceptors interceptors = beanClass.getAnnotation(Interceptors.class);
+			Behaviour interceptors = beanClass.getAnnotation(Behaviour.class);
 			
 			for(Class<?> interceptor : interceptors.value() ){
 					
