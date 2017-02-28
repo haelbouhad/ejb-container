@@ -21,7 +21,7 @@ public class EJBHandler implements InvocationHandler {
 
 	private Class<?> beanClass;
 	private Object bean;
-	private List<Interceptor> interceptors;	// BeanClass interceptors
+	private List<Interceptor> interceptors;	
 	private Map<Method, List<Interceptor>> methodInterceptors;
 	private BeanManager beanManager;
 	
@@ -30,8 +30,6 @@ public class EJBHandler implements InvocationHandler {
 		this.beanClass = beanClass;
 		beanManager = BeanManager.getInstance();
 		bean = beanManager.getBeanOfClass(beanClass);
-		// Parserle beanClass et detecter les annotation inject pour 
-		// ..
 		interceptors = new ArrayList<Interceptor>();
 		methodInterceptors = new HashMap<Method, List<Interceptor>>();
 	}

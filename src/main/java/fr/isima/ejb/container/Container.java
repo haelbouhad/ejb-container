@@ -103,19 +103,8 @@ public class Container {
 
 	private static Class<?>[] getInterfacesOf(Class<?> beanClass) {
 		
-		List<Class<?>> interfaces = new ArrayList<Class<?>>();
-		
-		// Add business interfaces
-		for(Class<?> interf : beanClass.getInterfaces())
-			interfaces.add(interf);
-		
-		// Add Proxy interface
-		interfaces.add(Iproxy.class);
-		
-		Class<?>[] result = new Class<?>[interfaces.size()];
-		interfaces.toArray(result);
-		
-		return result;	
+		return beanClass.getInterfaces();
+				
 	}
 
 
