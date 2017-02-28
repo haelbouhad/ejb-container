@@ -133,27 +133,15 @@ public class Container {
 				if(ejbClass.getAnnotation(Preferred.class) != null){
 					
 					ejbClasses.add(0, ejbClass);
+					
 				}else{
-					//System.out.print("Annotations: " + ejbClass.getAnnotations().length);
-					//System.out.println(" "+ ejbClass.getName());
+					
 					ejbClasses.add(ejbClass);
 				}
 				interfaceToImpl.put(ejbInterface.getName(), ejbClasses);
 			}
 				
 		}
-		
-		
-		
-		/*/
-		for(Entry<String, List<Class<?>>> interf : interfaceToImpl.entrySet()){
-			System.out.println("--- Interface : " + interf.getKey());
-			for(Class<?> ejbClass : interf.getValue()){
-				System.out.println(ejbClass.getName());
-			}
-			
-		}
-		//*/
 		
 		
 	}

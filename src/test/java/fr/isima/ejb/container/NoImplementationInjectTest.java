@@ -5,7 +5,7 @@ import org.junit.Test;
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
-import fr.isima.ejb.container.mocks.NotImplementedInterface;
+import fr.isima.ejb.container.mocks.interfaces.NotImplementedInterface;
 
 public class NoImplementationInjectTest {
 

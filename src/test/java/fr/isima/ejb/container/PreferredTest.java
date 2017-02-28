@@ -10,9 +10,9 @@ import org.junit.Test;
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
-import fr.isima.ejb.container.mocks.IServiceImpl;
-import fr.isima.ejb.container.mocks.MultipleService;
-import fr.isima.ejb.container.mocks.MultipleServiceImpl2;
+import fr.isima.ejb.container.mocks.classes.IServiceImpl;
+import fr.isima.ejb.container.mocks.classes.MultipleServiceImpl2;
+import fr.isima.ejb.container.mocks.interfaces.MultipleService;
 
 public class PreferredTest {
 

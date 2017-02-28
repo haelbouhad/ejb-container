@@ -9,7 +9,7 @@ import fr.isima.ejb.container.annotations.TransactionAttribute;
 import fr.isima.ejb.container.exceptions.EJBException;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
-import fr.isima.ejb.container.mocks.IService;
+import fr.isima.ejb.container.mocks.interfaces.IService;
 
 public class TransactionTest {
 

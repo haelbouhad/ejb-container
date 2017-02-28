@@ -10,7 +10,7 @@ import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
 import fr.isima.ejb.container.logging.Logger;
-import fr.isima.ejb.container.mocks.IService;
+import fr.isima.ejb.container.mocks.interfaces.IService;
 
 public class LogTest {
 	

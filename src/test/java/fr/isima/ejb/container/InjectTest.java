@@ -10,10 +10,10 @@ import org.junit.Test;
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
-import fr.isima.ejb.container.mocks.CascadedInterface;
-import fr.isima.ejb.container.mocks.CascadedInterfaceImplementation;
-import fr.isima.ejb.container.mocks.IService;
-import fr.isima.ejb.container.mocks.IServiceImpl;
+import fr.isima.ejb.container.mocks.classes.CascadedInterfaceImplementation;
+import fr.isima.ejb.container.mocks.classes.IServiceImpl;
+import fr.isima.ejb.container.mocks.interfaces.CascadedInterface;
+import fr.isima.ejb.container.mocks.interfaces.IService;
 
 /* 
  * If @Inject and no implementations found

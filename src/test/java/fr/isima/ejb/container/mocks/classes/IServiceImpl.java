@@ -1,4 +1,4 @@
-package fr.isima.ejb.container.mocks;
+package fr.isima.ejb.container.mocks.classes;
 
 
 import fr.isima.ejb.container.annotations.Log;
@@ -6,6 +6,7 @@ import fr.isima.ejb.container.annotations.Stateless;
 import fr.isima.ejb.container.annotations.TransactionAttribute;
 import fr.isima.ejb.container.annotations.TransactionAttribute.Type;
 import fr.isima.ejb.container.logging.Logger;
+import fr.isima.ejb.container.mocks.interfaces.IService;
 
 @Stateless
 public class IServiceImpl implements IService {

@@ -5,7 +5,7 @@ import org.junit.Test;
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
-import fr.isima.ejb.container.mocks.IMultiplePrefService;
+import fr.isima.ejb.container.mocks.interfaces.IMultiplePrefService;
 
 public class MultiplePreferedImplTest {
 

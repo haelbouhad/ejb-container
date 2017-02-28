@@ -10,8 +10,8 @@ import fr.isima.ejb.container.Container;
 import fr.isima.ejb.container.annotations.Inject;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
-import fr.isima.ejb.container.mocks.SingletonService;
-import fr.isima.ejb.container.mocks.SingletonServiceImpl;
+import fr.isima.ejb.container.mocks.classes.SingletonServiceImpl;
+import fr.isima.ejb.container.mocks.interfaces.SingletonService;
 
 public class SingletonTest {
 	
