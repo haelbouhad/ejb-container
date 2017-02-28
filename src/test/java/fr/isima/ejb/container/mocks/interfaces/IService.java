@@ -1,10 +1,15 @@
 package fr.isima.ejb.container.mocks.interfaces;
 
+
+
 public interface IService {
 	
-	public void method();
+	public void FirstLoggedMethod();	
+	public void SecondLoggedMethod();
+		
+	public void notLoggedMethod();
+		
 	
-	public void method2();
 	
 	public void doRequiredTransaction();
 	

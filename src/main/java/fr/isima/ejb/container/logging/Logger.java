@@ -28,6 +28,13 @@ public class Logger {
     	return fullName.substring(fullName.lastIndexOf(".")+1);
     }
     
+    public static int size(){
+    	return logs.size();
+    }
+    
+    public static void reset(){
+    	logs.clear();
+    }
     
     
 }

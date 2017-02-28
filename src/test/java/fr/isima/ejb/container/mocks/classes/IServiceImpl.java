@@ -13,11 +13,15 @@ public class IServiceImpl implements IService {
 
 	
 	@Log
-	public void method(){
+	public void FirstLoggedMethod(){
 	}
 	
 	@Log
-	public void method2(){
+	public void SecondLoggedMethod(){
+		FirstLoggedMethod();
+	}
+	
+	public void notLoggedMethod(){		
 	}
 
 	@TransactionAttribute(Type.REQUIRED)

@@ -23,14 +23,32 @@ public class LogTest {
 	}
 	
 	@Test
-	public void test(){
+	public void basicLogTest(){
+
 		
-		service.method();
-		assertTrue(Logger.contains("IServiceImpl.method()"));
-		assertFalse(Logger.contains("IServiceImpl.method2()"));
+		service.FirstLoggedMethod();
+		assertTrue(Logger.contains("IServiceImpl.FirstLoggedMethod()"));
+		assertTrue(Logger.size() == 1);		
+	}
+	
+	@Test
+	public void cascadedLogTest(){
+		Logger.reset();
 		
-		service.method2();
-		assertTrue(Logger.contains("IServiceImpl.method2()"));
+		service.SecondLoggedMethod();
+		
+		assertTrue(Logger.contains("IServiceImpl.SecondLoggedMethod()"));
+		assertTrue(Logger.size() == 2);	
+		assertTrue(Logger.contains("IServiceImpl.FirstLoggedMethod()"));
+		
+	}
+	
+	@Test
+	public void NonLogTest(){
+		Logger.reset();
+		
+		service.notLoggedMethod();		
+		assertTrue(Logger.size() == 0);	
 		
 	}
 	
