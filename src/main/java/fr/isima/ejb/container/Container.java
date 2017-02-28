@@ -1,20 +1,26 @@
 package fr.isima.ejb.container;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.omg.CORBA.NVList;
+
 
 import fr.isima.ejb.container.annotations.Inject;
+import fr.isima.ejb.container.annotations.Interceptors;
+import fr.isima.ejb.container.annotations.PostConstruct;
 import fr.isima.ejb.container.annotations.Preferred;
 import fr.isima.ejb.container.annotations.Singleton;
 import fr.isima.ejb.container.annotations.Stateless;
 import fr.isima.ejb.container.exceptions.MultipleExistingImplementation;
 import fr.isima.ejb.container.exceptions.NoExistingImplementation;
+
 
 
 
@@ -143,6 +149,36 @@ public class Container {
 				
 		}
 		
+		
+	}
+
+
+	public static void invokePostConstructOf(Object bean, Class<?> beanClass) {
+		
+		if(AnnotationsHelper.isAnnotatedWith(beanClass, Interceptors.class)){
+
+			Interceptors interceptors = beanClass.getAnnotation(Interceptors.class);
+			
+			for(Class<?> interceptor : interceptors.value() ){
+					
+				Set<Method> methods = AnnotationsHelper.getMethodsAnnotatedWith(interceptor, PostConstruct.class);
+				
+				for(Method method : methods){
+					
+					try {
+						
+						method.invoke(bean, new Object[]{});
+						
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+						
+						//throw new PostConstructInvokationException(m, e);
+					}
+					
+				}
+				
+			}
+			
+		}
 		
 	}
 	

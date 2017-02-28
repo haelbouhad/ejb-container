@@ -36,12 +36,14 @@ public class BeanManager {
 	public Object getBeanOfClass(Class<?> serviceClass) {
 		Object bean = null;
 		if(statelessClassToBeans.containsKey(serviceClass)){
-			bean = makeStatelessBean(serviceClass);			
+			bean = makeStatelessBean(serviceClass);	
+			
 		}else if(singletonClassToBean.containsKey(serviceClass)){
 			if(singletonClassToBean.get(serviceClass) == null)
 				singletonClassToBean.put(serviceClass, makeSingletonBean(serviceClass));
 			bean = singletonClassToBean.get(serviceClass);
 		}
+		Container.invokePostConstructOf(bean, serviceClass);
 		return bean;
 	}
 

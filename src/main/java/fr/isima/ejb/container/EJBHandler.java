@@ -1,7 +1,7 @@
 package fr.isima.ejb.container;
 
 
-import java.lang.annotation.Annotation;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -49,8 +49,6 @@ public class EJBHandler implements InvocationHandler {
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		/*Invocation invocation = new Invocation(bean, interceptors, method, args);
-		return invocation.nextInterceptor();*/
 		
 		Object result = null;
 		
