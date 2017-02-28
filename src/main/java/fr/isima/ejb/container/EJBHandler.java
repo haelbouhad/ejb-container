@@ -75,12 +75,20 @@ public class EJBHandler implements InvocationHandler {
 		
 		if(interceptors == null)
 		{
-			if(method.getAnnotation(Log.class) != null)
-				methodInterceptors.put(method, Arrays.asList(new LogInterceptor()));
+			
+			interceptors = new ArrayList<Interceptor>();
+			
+			if(method.getAnnotation(Log.class) != null){
+				
+				interceptors.add(new LogInterceptor());
+			}
 			
 			if(method.getAnnotation(TransactionAttribute.class) != null ){
-				methodInterceptors.put(method, Arrays.asList(new TransactionInterceptor()));	
+				
+				interceptors.add(new TransactionInterceptor());	
 			}
+			
+			methodInterceptors.put(method, interceptors);
 		}
 		else
 		{
